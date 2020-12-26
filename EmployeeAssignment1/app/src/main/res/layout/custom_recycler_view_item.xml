@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="25dp"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+
+
+        <ImageView
+            android:id="@+id/personimage"
+            android:layout_width="147dp"
+            android:layout_height="150dp"
+            app:srcCompat="@drawable/personimage" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/personname"
+            android:layout_toRightOf="@id/personimage"
+            android:text="Person Name"
+            android:layout_marginLeft="10dp"
+            android:textSize="15dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/persontitle"
+            android:text="Person Title"
+            android:textSize="15dp"
+            android:layout_below="@id/personname"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/personimage"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/personemail"
+            android:text="Person Email"
+            android:textSize="15dp"
+            android:layout_below="@id/persontitle"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/personimage"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/personphone"
+            android:text="Person Phone"
+            android:textSize="15dp"
+            android:layout_below="@id/personemail"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/personimage"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/persondepartmentname"
+            android:text="Department Name"
+            android:textSize="15dp"
+            android:layout_below="@id/personphone"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/personimage"
+            android:layout_marginLeft="10dp"
+            />
+    </RelativeLayout>
+
+
+
+</androidx.cardview.widget.CardView>

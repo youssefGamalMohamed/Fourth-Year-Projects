@@ -97,7 +97,7 @@
         android:background="@drawable/button_and_editext_custom_shape"
         android:ems="10"
         android:hint="Password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
@@ -140,14 +140,28 @@
         android:id="@+id/btn_confirm_data_in_sign_up"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/button_and_editext_custom_shape"
         android:text="Confirm Sign Up"
-        android:textStyle="bold"
         android:textAllCaps="false"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_recoveryanswer" />
+
+    <TextView
+        android:id="@+id/signup_wait_asceond_and_successfully_"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:text=""
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_confirm_data_in_sign_up" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
