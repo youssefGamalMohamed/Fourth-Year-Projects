@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -30,17 +31,17 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
                 " foreign key(CatID) references Categories(CatID))");
 
 
-        db.execSQL("Create table OrderDetails(OrdID integer not null , ProID integer not null , Quantity integer," +
+        db.execSQL("Create table OrderDetails(OrdID integer not null , Quantity integer , ProID integer not null , primary key(OrdID,ProID) ," +
                 " foreign key(OrdID,ProID) references tables(Orders,Products))");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists OrderDetails");
-        db.execSQL("drop table if exists Orders");
-        db.execSQL("drop table if exists Products");
         db.execSQL("drop table if exists Customers");
         db.execSQL("drop table if exists Categories");
+        db.execSQL("drop table if exists Orders");
+        db.execSQL("drop table if exists Products");
+        db.execSQL("drop table if exists OrderDetails");
         onCreate(db);
     }
 
@@ -66,13 +67,26 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
 
     public boolean Login(String inusername , String inpassword){
         EcommerceDB = getReadableDatabase();
-        Cursor c = EcommerceDB.rawQuery("select * from Customers where Username = ? and Password = ?",new String[]{inusername,inpassword});
-        EcommerceDB.close();
-        if(c != null)
+        String[] mycols = new String[] {"Username" , "Password" , "Question" , "Answer"};
+        String[] myargs = new String[] {inusername , inpassword};
+        Cursor c = EcommerceDB.query("Customers" , mycols , "Username = ? and Password = ?" ,  myargs , null , null , null);
+        System.out.println(c.getCount());
+
+        if(c.getCount() > 0)
             return true;
         return false;
     }
 
+
+    public Cursor ForgetPassword(String inusername){
+        EcommerceDB = getReadableDatabase();
+        String[] mycols = new String[] {"Username" , "Password" , "Question" , "Answer"};
+        String[] myargs = new String[] {inusername};
+        Cursor c = EcommerceDB.query("Customers" , mycols , "Username = ?" ,  myargs , null , null , null);
+        if(c != null)
+            c.moveToFirst();
+        return c;
+    }
     //----------------------------------------------------------------------------------
 
 }
