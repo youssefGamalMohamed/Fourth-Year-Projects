@@ -2,7 +2,9 @@ package com.example.ecommerce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LogInActivity extends AppCompatActivity {
+    SharedPreferences shareref;
     Button btn_signup;
     TextView forgetpasswordtv;
     EditText ed_username;
@@ -26,6 +29,8 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
+        shareref = getSharedPreferences("Remember Me" , Context.MODE_PRIVATE);
+
         btn_signup = (Button)(findViewById(R.id.btn_signup_in_loginactivity));
         forgetpasswordtv = (TextView)(findViewById(R.id.login_forgetpassword_textview));
 
@@ -38,6 +43,10 @@ public class LogInActivity extends AppCompatActivity {
 
         tv_error = (TextView)(findViewById(R.id.incorrect_username_or_password));
 
+        //SharedPreference Code
+        ed_username.setText(shareref.getString("Username",""));
+        ed_password.setText(shareref.getString("Password",""));
+
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +57,8 @@ public class LogInActivity extends AppCompatActivity {
                     new CountDownTimer(2000, 1000) {
 
                         public void onTick(long millisUntilFinished) {
+                            tv_error.setText(R.string.error_in_sign_in);
+                            tv_error.setTextColor(getResources().getColor(R.color.errorcolor));
                             tv_error.setVisibility(View.VISIBLE);
                         }
 
@@ -68,7 +79,13 @@ public class LogInActivity extends AppCompatActivity {
 
                         public void onFinish() {
                             tv_error.setVisibility(View.INVISIBLE);
-                            // then go to the e-commerce app
+                            SharedPreferences.Editor myedit = shareref.edit();
+                            myedit.putString("Username" , ed_username.getText().toString());
+                            myedit.putString("Password" , ed_password.getText().toString());
+                            myedit.commit();
+                            Intent i = new Intent(getApplicationContext() , CategoriesActivity.class);
+                            startActivity(i);
+                            // then go to the e-commerce categories activity
                         }
                     }.start();
 

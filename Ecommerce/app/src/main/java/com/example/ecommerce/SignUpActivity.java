@@ -1,7 +1,11 @@
 package com.example.ecommerce;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -9,9 +13,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 public class SignUpActivity extends AppCompatActivity {
     EditText ed_name;
@@ -30,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     Customer c;
     Button btn_confirm;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +77,23 @@ public class SignUpActivity extends AppCompatActivity {
                         tv.setText("Successfully Sign Up");
                     }
                 }.start();
+            }
+        });
+
+        ed_birthdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Calendar mycalender = Calendar.getInstance();
+                final int year = mycalender.get(Calendar.YEAR) , month = mycalender.get(Calendar.MONTH) , day = mycalender.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(SignUpActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        ed_birthdate.setText(dayOfMonth + "-" + month + "-" + year);
+                    }
+                },year,month,day);
+                datePickerDialog.setTitle("Select Data");
+                datePickerDialog.show();
             }
         });
 
