@@ -32,7 +32,7 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
 
 
         db.execSQL("Create table OrderDetails(OrdID integer not null , Quantity integer , ProID integer not null , primary key(OrdID,ProID) ," +
-                " foreign key(OrdID,ProID) references tables(Orders,Products))");
+                " foreign key(OrdID) references Orders(OrdID) , foreign key(ProID) references Products(ProID))");
     }
 
     @Override

@@ -27,7 +27,7 @@
             <TextView
                 android:id="@+id/custom_categories_recyclerview_textview"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:text="TextView"

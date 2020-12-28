@@ -26,15 +26,28 @@ public class CategoriesActivity extends AppCompatActivity {
         titles = new ArrayList<>();
         images = new ArrayList<>();
 
-        titles.add("First Image");
-        titles.add("Second Image");
-        titles.add("Third Image");
-        titles.add("Fourth Image");
+        titles.add("Computers");
+        titles.add("Labtops");
+        titles.add("Mobiles & Tablets");
+        titles.add("Cameras");
+        titles.add("Watches");
+        titles.add("Televisions");
+        titles.add("Projectors");
+        titles.add("Men Clothes");
+        titles.add("Books");
+        titles.add("Sports");
 
-        images.add(R.drawable.cartimage);
-        images.add(R.drawable.jumiaimage);
-        images.add(R.drawable.lockicon);
-        images.add(R.drawable.usericon);
+
+        images.add(R.drawable.computer);
+        images.add(R.drawable.labtop);
+        images.add(R.drawable.mobile_and_tablet);
+        images.add(R.drawable.camera);
+        images.add(R.drawable.watche);
+        images.add(R.drawable.tv);
+        images.add(R.drawable.projector);
+        images.add(R.drawable.men_clothes);
+        images.add(R.drawable.book);
+        images.add(R.drawable.sport);
 
         adapter = new CategoriesArrayAdapter(titles , images);
 
