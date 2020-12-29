@@ -9,11 +9,17 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class EcommerceDataBase extends SQLiteOpenHelper {
     private static String dbname ="EcommerceDB";
     SQLiteDatabase EcommerceDB;
+
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
 
     public EcommerceDataBase(@Nullable Context context) {
         super(context, dbname, null, 1);
@@ -128,7 +134,7 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
 
 
 
-                "adida_Weft_knitted_Regista",  // Sports
+                "adidas_Weft_knitted_Regista",  // Sports
                 "Adidas_Manchester_United",
                 "Arsenal_FC",
                 "Barcelona_FC",
@@ -144,13 +150,26 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
             db.insert("Categories" , null , content);
         }
 
+        int catid = 1;
         for(int i = 0 ; i < 60 ; i ++){
             String product_name = productname_arr[i];
             product_name = product_name.replace('_' , ' ');
             System.out.println(product_name);
 
             int quantity , price;
+            quantity = getRandomNumber(2 , 30);
+            price    = getRandomNumber(1500 , 50000);
 
+            int j = i + 1;
+            if(j % 6 == 1 && j > 1){
+                catid++;
+            }
+            ContentValues content = new ContentValues();
+            content.put("ProName" , product_name);
+            content.put("Price" , price);
+            content.put("Quantity" , quantity);
+            content.put("CatID" , catid);
+            db.insert("Products" , null , content);
         }
 
     }
@@ -221,6 +240,26 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
         return c;
 
     }
+
+    public int GetCategoryID(String category_name){
+        EcommerceDB = getReadableDatabase();
+        Cursor c = EcommerceDB.rawQuery("select CatID from Categories where Catname = ?" , new String[] {category_name});
+        c.moveToFirst();
+        return Integer.parseInt(c.getString(0).toString());
+    }
     //-----------------------------------------------------------------------------------
 
+
+
+    //Product
+    //-----------------------------------------------------------------------------------
+    public Cursor GetProducts_ForSpecificCategory(int category_id){
+        EcommerceDB = getReadableDatabase();
+        String str_id = String.valueOf(category_id);
+        Cursor c = EcommerceDB.rawQuery("select ProName,Price,Quantity from Products where CatID = ?" , new String[] {str_id});
+        if(c != null)
+            c.moveToFirst();
+        return c;
+    }
+    //-----------------------------------------------------------------------------------
 }
