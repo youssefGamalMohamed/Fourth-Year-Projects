@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class EcommerceDataBase extends SQLiteOpenHelper {
     private static String dbname ="EcommerceDB";
     SQLiteDatabase EcommerceDB;
@@ -33,6 +35,124 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
 
         db.execSQL("Create table OrderDetails(OrdID integer not null , Quantity integer , ProID integer not null , primary key(OrdID,ProID) ," +
                 " foreign key(OrdID) references Orders(OrdID) , foreign key(ProID) references Products(ProID))");
+
+        String [] catarr = {
+                "Computers",
+                "Labtops",
+                "Mobiles & Tablets",
+                "Cameras",
+                "Watches",
+                "Televisions",
+                "Projectors",
+                "Men Clothes",
+                "Books",
+                "Sports"
+        };
+
+        String [] productname_arr = {
+                "Alienware_AURORA_Gaming",  // Computers
+                "Apple_iMac_2017_MNED2BA",
+                "Apple_iMac_MMQA2",
+                "Dell_Desktop_9020",
+                "Hp_24_XA0001NE_Pavilion",
+                "OptiPlex_7070_Tower_Dell_Case",
+
+
+
+                "Acer_Predator_Helios_300",  // Labtops
+                "Apple_MacBook_Air_2020",
+                "Asus_GX701GXR",
+                "Dell_G5_155500",
+                "HP_Pavilion_15",
+                "Lenovo_V15_ADA",
+
+
+
+                "Apple_IPhone_11_Pro_Max",  // Tablets and Mobile
+                "Apple_IPhone_12_Pro_Max",
+                "Huawei_Y6S",
+                "Infinix_Note_5",
+                "Realme_C12",
+                "Xiomi_Redmi_7A",
+
+
+                "CANON_EOS_250D",  // Cameras
+                "Canon_EOS_2000D",
+                "Canon_EOS_M50",
+                "Nikon_COOLPIX_B500",
+                "Nikon_FX_format",
+                "Sony_Alpha_a7",
+
+
+
+                "Alba_Active_AS9J21X",  // Watches
+                "Emporio_Armani",
+                "Fossil_Grand_Fs4735",
+                "Fossil_Grant_321",
+                "Hugo_Boss_Black",
+                "Michael_Kors_Dylan_Watch",
+
+
+
+
+                "ARION_LED_32_Inch",  // Televisions
+                "GTV_32_Inch",
+                "Hoho_32_Inch_HD",
+                "Sary_32_Inch",
+                "Syinix_32_Inch",
+                "Tornado_Led_32_Inch",
+
+
+                "BenQ_DLP",  // Projectors
+                "Canon_Multimedia_LV_X320",
+                "Cyber_Uc46hd",
+                "EPSON_EBX05",
+                "Hd_model_10_UB",
+                "HOME_THEATER_YG_600",
+
+
+                "Blue_Gens",  // Men Clothes
+                "ELKHOLY_Fashion",
+                "Genedi_Ribbed_Trims",
+                "Grinta_Canvas",
+                "Hero_Grey",
+                "Roadwalker_Round",
+
+
+                "Assembly_Learning",  // Books
+                "C++_And_Object_Oriented",
+                "Clean_Code",
+                "Introduction_To_Java",
+                "Learning_Python",
+                "Oracle_Database_Learning",
+
+
+
+                "adida_Weft_knitted_Regista",  // Sports
+                "Adidas_Manchester_United",
+                "Arsenal_FC",
+                "Barcelona_FC",
+                "Pro_Hanson_Soccer",
+                "Wilson_1858XB_American_Football"
+
+        };
+
+
+        for(int i = 0 ; i < 10 ; i++){
+            ContentValues content = new ContentValues();
+            content.put("Catname" , catarr[i]);
+            db.insert("Categories" , null , content);
+        }
+
+        for(int i = 0 ; i < 60 ; i ++){
+            String product_name = productname_arr[i];
+            product_name = product_name.replace('_' , ' ');
+            System.out.println(product_name);
+
+            int quantity , price;
+
+        }
+
     }
 
     @Override
@@ -47,7 +167,6 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
 
 
     // User Function
-
     public void SignUp(Customer c)
     {
         EcommerceDB = getWritableDatabase();
@@ -88,5 +207,20 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
         return c;
     }
     //----------------------------------------------------------------------------------
+
+
+    //Categories
+    //-----------------------------------------------------------------------------------
+    public Cursor GetAllCategories(){
+        EcommerceDB = getReadableDatabase();
+        String[] mycols = new String[] {"CatID" , "Catname"};
+        String[] myargs = new String[] {};
+        Cursor c = EcommerceDB.query("Categories" , mycols , "" ,  myargs , null , null , null);
+        if(c != null)
+            c.moveToFirst();
+        return c;
+
+    }
+    //-----------------------------------------------------------------------------------
 
 }

@@ -14,10 +14,11 @@ import java.util.ArrayList;
 public class CategoriesArrayAdapter extends RecyclerView.Adapter<CategoriesArrayAdapter.ViewHolder> {
     ArrayList<String> titles;
     ArrayList<Integer> images;
-
-    public CategoriesArrayAdapter(ArrayList<String> titles, ArrayList<Integer> images) {
+    OnRecyclerViewCategoryItemClickListener listener;
+    public CategoriesArrayAdapter(ArrayList<String> titles, ArrayList<Integer> images , OnRecyclerViewCategoryItemClickListener listener) {
         this.titles = titles;
         this.images = images;
+        this.listener = listener;
     }
 
     @NonNull
@@ -48,6 +49,13 @@ public class CategoriesArrayAdapter extends RecyclerView.Adapter<CategoriesArray
             super(itemView);
             tv_title = itemView.findViewById(R.id.custom_categories_recyclerview_textview);
             imageview_img = itemView.findViewById(R.id.custom_categories_recyclerview_image);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.OnItemClick(tv_title.getText().toString());
+                }
+            });
         }
     }
 }

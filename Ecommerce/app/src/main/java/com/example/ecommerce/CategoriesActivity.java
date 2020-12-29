@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -13,7 +15,8 @@ public class CategoriesActivity extends AppCompatActivity {
     CategoriesArrayAdapter adapter;
     ArrayList<String> titles;
     ArrayList<Integer> images;
-
+    EcommerceDataBase dbobj;
+    Cursor cursor_allcategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,22 +24,21 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
 
 
+
         categories_recyceler_view = findViewById(R.id.categories_recyclerview);
 
         titles = new ArrayList<>();
         images = new ArrayList<>();
 
-        titles.add("Computers");
-        titles.add("Labtops");
-        titles.add("Mobiles & Tablets");
-        titles.add("Cameras");
-        titles.add("Watches");
-        titles.add("Televisions");
-        titles.add("Projectors");
-        titles.add("Men Clothes");
-        titles.add("Books");
-        titles.add("Sports");
 
+        dbobj = new EcommerceDataBase(getApplicationContext());
+        cursor_allcategories = dbobj.GetAllCategories();
+
+        while(!cursor_allcategories.isAfterLast()){
+            titles.add(cursor_allcategories.getString(1));
+            System.out.println(cursor_allcategories.getString(1));
+            cursor_allcategories.moveToNext();
+        }
 
         images.add(R.drawable.computer);
         images.add(R.drawable.labtop);
@@ -49,7 +51,16 @@ public class CategoriesActivity extends AppCompatActivity {
         images.add(R.drawable.book);
         images.add(R.drawable.sport);
 
-        adapter = new CategoriesArrayAdapter(titles , images);
+        adapter = new CategoriesArrayAdapter(titles, images, new OnRecyclerViewCategoryItemClickListener() {
+            @Override
+            public void OnItemClick(String s) {
+                Intent i = new Intent(getApplicationContext() , ProductsActivity.class);
+                Bundle b = new Bundle();
+                b.putString("category" , s);
+                i.putExtras(b);
+                startActivity(i);
+            }
+        });
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext() , 2 , GridLayoutManager.VERTICAL , false);
         categories_recyceler_view.setAdapter(adapter);
