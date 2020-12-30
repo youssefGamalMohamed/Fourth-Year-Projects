@@ -9,4 +9,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lawgreen">#7FFF00</color>
     <color name="errorcolor">#FA2929</color>
+    <color name="darkblue">#00008B</color>
+    <color name="orangered">#FF4500</color>
+    <color name="orangedark">#FF8C00</color>
+    <color name="orange">#FFA500</color>
+    <color name="green">#006400</color>
 </resources>

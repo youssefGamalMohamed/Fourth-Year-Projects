@@ -1,6 +1,9 @@
 package com.example.ecommerce;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,7 +31,10 @@ public class ProductsActivity extends AppCompatActivity {
 
 
     EcommerceDataBase dbobj;
+
+    RecyclerView product_recyclerView;
     ArrayList<Product> productArrayList;
+    ProductArrayAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +43,22 @@ public class ProductsActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         coming_category = b.getString("category");
         dbobj = new EcommerceDataBase(getApplicationContext());
+        productArrayList = new ArrayList<Product>();
 
         SpecifyDisplayedProducts();
+
+        adapter = new ProductArrayAdapter(productArrayList, new OnButtonClickListenerInProductRecyclerViewItem() {
+            @Override
+            public void OnButtonClickListener(int position) {
+                System.out.println("The Name of Product is " + productArrayList.get(position).ProductName);
+            }
+        });
+        product_recyclerView = findViewById(R.id.product_recyclerview);
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(getApplicationContext());
+        product_recyclerView.setLayoutManager(lm);
+        product_recyclerView.setAdapter(adapter);
+        //product_recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext() , DividerItemDecoration.VERTICAL));
+        product_recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(20));
     }
 
     public void SpecifyDisplayedProducts(){
@@ -50,6 +70,7 @@ public class ProductsActivity extends AppCompatActivity {
             String name = c.getString(0);
             int price = Integer.parseInt(c.getString(1)) , quantity = Integer.parseInt(c.getString(2));
             Product product = new Product(name , price , quantity , all_categories[indx_in_array_all_categories][pos]);
+            productArrayList.add(product);
             System.out.println(name +" "+price+" "+quantity+" "+all_categories[indx_in_array_all_categories][pos]);
             pos++;
             c.moveToNext();
