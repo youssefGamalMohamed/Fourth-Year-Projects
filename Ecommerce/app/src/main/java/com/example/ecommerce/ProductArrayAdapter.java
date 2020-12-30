@@ -61,7 +61,7 @@ public class ProductArrayAdapter extends RecyclerView.Adapter<ProductArrayAdapte
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    listener.OnButtonClickListener(position);
+                    listener.OnButtonClickListener(position , itemView);
                 }
             });
 

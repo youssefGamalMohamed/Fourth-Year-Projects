@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,12 +19,18 @@ public class CategoriesActivity extends AppCompatActivity {
     EcommerceDataBase dbobj;
     Cursor cursor_allcategories;
 
+
+    int Customer_ID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
 
+
+        // This to Receive The Customer ID from Login Activity To Pass it to Product Activity
+        Intent anything = getIntent();
+        Customer_ID = anything.getIntExtra("custid" , -1);
 
         categories_recyceler_view = findViewById(R.id.categories_recyclerview);
 
@@ -57,6 +64,7 @@ public class CategoriesActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext() , ProductsActivity.class);
                 Bundle b = new Bundle();
                 b.putString("category" , s);
+                b.putInt("custid" , Customer_ID);
                 i.putExtras(b);
                 startActivity(i);
             }

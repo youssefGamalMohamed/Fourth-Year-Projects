@@ -84,6 +84,8 @@ public class LogInActivity extends AppCompatActivity {
                             myedit.putString("Password" , ed_password.getText().toString());
                             myedit.commit();
                             Intent i = new Intent(getApplicationContext() , CategoriesActivity.class);
+                            int custid = dbobj.GetCustomerrId(ed_username.getText().toString());
+                            i.putExtra("custid" , custid);
                             startActivity(i);
                             // then go to the e-commerce categories activity
                         }

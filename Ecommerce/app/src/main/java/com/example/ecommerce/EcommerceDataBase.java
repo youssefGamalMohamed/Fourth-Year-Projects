@@ -154,7 +154,7 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
         for(int i = 0 ; i < 60 ; i ++){
             String product_name = productname_arr[i];
             product_name = product_name.replace('_' , ' ');
-            System.out.println(product_name);
+
 
             int quantity , price;
             quantity = getRandomNumber(2 , 30);
@@ -208,7 +208,7 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
         String[] mycols = new String[] {"Username" , "Password" , "Question" , "Answer"};
         String[] myargs = new String[] {inusername , inpassword};
         Cursor c = EcommerceDB.query("Customers" , mycols , "Username = ? and Password = ?" ,  myargs , null , null , null);
-        System.out.println(c.getCount());
+
 
         if(c.getCount() > 0)
             return true;
@@ -224,6 +224,13 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
         if(c != null)
             c.moveToFirst();
         return c;
+    }
+
+    public int GetCustomerrId(String username){
+        EcommerceDB = getReadableDatabase();
+        Cursor c = EcommerceDB.rawQuery("select CustID from Customers where Username = ?" , new String[]{username});
+        c.moveToFirst();
+        return Integer.parseInt(c.getString(0));
     }
     //----------------------------------------------------------------------------------
 
@@ -256,7 +263,7 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
     public Cursor GetProducts_ForSpecificCategory(int category_id){
         EcommerceDB = getReadableDatabase();
         String str_id = String.valueOf(category_id);
-        Cursor c = EcommerceDB.rawQuery("select ProName,Price,Quantity from Products where CatID = ?" , new String[] {str_id});
+        Cursor c = EcommerceDB.rawQuery("select ProID,ProName,Price,Quantity from Products where CatID = ?" , new String[] {str_id});
         if(c != null)
             c.moveToFirst();
         return c;

@@ -7,12 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class ProductsActivity extends AppCompatActivity {
 
     String coming_category;
+    int Customer_ID;
 
     int [] computers = {R.drawable.computer1 , R.drawable.computer2 , R.drawable.computer3 , R.drawable.computer4 , R.drawable.computer5 , R.drawable.computer6};
     int [] labtops =   {R.drawable.labtop1 , R.drawable.labtop2 , R.drawable.labtop3 , R.drawable.labtop4 , R.drawable.labtop5 , R.drawable.labtop6};
@@ -42,6 +45,9 @@ public class ProductsActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         coming_category = b.getString("category");
+        Customer_ID = b.getInt("custid");
+
+
         dbobj = new EcommerceDataBase(getApplicationContext());
         productArrayList = new ArrayList<Product>();
 
@@ -49,11 +55,14 @@ public class ProductsActivity extends AppCompatActivity {
 
         adapter = new ProductArrayAdapter(productArrayList, new OnButtonClickListenerInProductRecyclerViewItem() {
             @Override
-            public void OnButtonClickListener(int position) {
-                System.out.println("The Name of Product is " + productArrayList.get(position).ProductName);
+            public void OnButtonClickListener(int position, View item) {
+                Product p = productArrayList.get(position);
+                TextView tv_quan = (TextView)item.findViewById(R.id.tv_productquantity);
+
+                tv_quan.setText(tv_quan.getText().toString() + "dfsfsdfsdfsf");
             }
         });
-        product_recyclerView = findViewById(R.id.product_recyclerview);
+                product_recyclerView = findViewById(R.id.product_recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getApplicationContext());
         product_recyclerView.setLayoutManager(lm);
         product_recyclerView.setAdapter(adapter);
@@ -67,11 +76,11 @@ public class ProductsActivity extends AppCompatActivity {
         int pos = 0;
         while(!c.isAfterLast())
         {
-            String name = c.getString(0);
-            int price = Integer.parseInt(c.getString(1)) , quantity = Integer.parseInt(c.getString(2));
-            Product product = new Product(name , price , quantity , all_categories[indx_in_array_all_categories][pos]);
+            String name = c.getString(1);
+            int id = Integer.parseInt(c.getString(0)), price = Integer.parseInt(c.getString(2)) , quantity = Integer.parseInt(c.getString(3));
+            Product product = new Product(id , name , price , quantity , all_categories[indx_in_array_all_categories][pos]);
             productArrayList.add(product);
-            System.out.println(name +" "+price+" "+quantity+" "+all_categories[indx_in_array_all_categories][pos]);
+            System.out.println(id + " " + name +" "+price+" "+quantity+" "+all_categories[indx_in_array_all_categories][pos]);
             pos++;
             c.moveToNext();
         }
