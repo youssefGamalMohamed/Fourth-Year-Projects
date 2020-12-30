@@ -268,5 +268,11 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
             c.moveToFirst();
         return c;
     }
+
+    public void ReducingQuantitybtOne(int productid , int new_quantity){
+        EcommerceDB = getWritableDatabase();
+        String q = "update Products set Quantity=" + new_quantity + " where ProID=" + productid;
+        EcommerceDB.execSQL(q);
+    }
     //-----------------------------------------------------------------------------------
 }

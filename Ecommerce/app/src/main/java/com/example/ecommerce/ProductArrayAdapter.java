@@ -43,6 +43,13 @@ public class ProductArrayAdapter extends RecyclerView.Adapter<ProductArrayAdapte
         return AllProducts_With_Image.size();
     }
 
+
+    public void removeAt(int position) {
+        AllProducts_With_Image.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, AllProducts_With_Image.size());
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView tv_productname , tv_productprice , tv_productquantity;

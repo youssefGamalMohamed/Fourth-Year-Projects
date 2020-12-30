@@ -58,8 +58,15 @@ public class ProductsActivity extends AppCompatActivity {
             public void OnButtonClickListener(int position, View item) {
                 Product p = productArrayList.get(position);
                 TextView tv_quan = (TextView)item.findViewById(R.id.tv_productquantity);
-
-                tv_quan.setText(tv_quan.getText().toString() + "dfsfsdfsdfsf");
+                int new_quantity = Cart.GetNumberFromString(tv_quan.getText().toString()) - 1;
+                Cart.AddProductToCart(p);
+                if(new_quantity > 0) {
+                    dbobj.ReducingQuantitybtOne(p.ProductID , new_quantity);
+                    tv_quan.setText("Quantity : " + new_quantity);
+                }
+                else{
+                    adapter.removeAt(position);
+                }
             }
         });
                 product_recyclerView = findViewById(R.id.product_recyclerview);
