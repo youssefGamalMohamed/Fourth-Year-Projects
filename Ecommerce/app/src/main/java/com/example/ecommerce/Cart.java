@@ -20,9 +20,12 @@ public class Cart {
         int ProductId = product.ProductID;
         Pair<Product,Integer> p ;
         if(!product_and_quantity.containsKey(ProductId)){
+            product.ProductQuantity = 1;
             p = new Pair<Product,Integer>(product , 1);
         }
         else{
+            product.ProductQuantity = product_and_quantity.get(ProductId).second + 1;
+            product.ProductPrice = product_and_quantity.get(ProductId).first.ProductPrice + product.ProductPrice;
             p =  new Pair<Product,Integer>(product , product_and_quantity.get(ProductId).second + 1);
         }
         product_and_quantity.put(ProductId , p);
@@ -31,7 +34,7 @@ public class Cart {
     public static void UpdateProductToCart(Product product , int Quantity){
         int ProductId = product.ProductID;
         if(product_and_quantity.containsKey(ProductId)){
-            product_and_quantity.put(ProductId ,  new Pair<Product,Integer>(product,Quantity+1));
+            product_and_quantity.put(ProductId ,  new Pair<Product,Integer>(product,Quantity));
         }
     }
 
@@ -41,7 +44,6 @@ public class Cart {
             product_and_quantity.remove(ProductId);
         }
     }
-
 
 
     // Not Relate to Function

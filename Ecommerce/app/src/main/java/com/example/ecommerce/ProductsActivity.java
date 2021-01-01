@@ -5,9 +5,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -38,10 +42,34 @@ public class ProductsActivity extends AppCompatActivity {
     RecyclerView product_recyclerView;
     ArrayList<Product> productArrayList;
     ProductArrayAdapter adapter;
+
+    @Override
+    protected void onRestart() {
+        while (productArrayList.size() > 0){
+            adapter.removeAt(0);
+        }
+        SpecifyDisplayedProducts();
+        super.onRestart();
+    }
+
+    ImageButton btn_cart;
+    ImageButton btn_search;
+    EditText ed_productname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
+
+        btn_cart = (ImageButton)findViewById(R.id.btn_cart_that_in_productactivity);
+        btn_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext() , OrdersActivity.class);
+                startActivity(i);
+            }
+        });
+
+
 
         Bundle b = getIntent().getExtras();
         coming_category = b.getString("category");
@@ -56,13 +84,20 @@ public class ProductsActivity extends AppCompatActivity {
         adapter = new ProductArrayAdapter(productArrayList, new OnButtonClickListenerInProductRecyclerViewItem() {
             @Override
             public void OnButtonClickListener(int position, View item) {
-                Product p = productArrayList.get(position);
+                Product tmp = productArrayList.get(position);
+
+
+                Product p = new Product(tmp.ProductID , tmp.ProductName , tmp.ProductPrice , tmp.ProductQuantity , tmp.ProductImageSrc);
+
+
                 TextView tv_quan = (TextView)item.findViewById(R.id.tv_productquantity);
-                int new_quantity = Cart.GetNumberFromString(tv_quan.getText().toString()) - 1;
+                int tv_new_quantity = Cart.GetNumberFromString(tv_quan.getText().toString()) - 1;
+
+
                 Cart.AddProductToCart(p);
-                if(new_quantity > 0) {
-                    dbobj.ReducingQuantitybtOne(p.ProductID , new_quantity);
-                    tv_quan.setText("Quantity : " + new_quantity);
+                if(tv_new_quantity > 0) {
+                    dbobj.ReducingQuantitybtOne(p.ProductID , tv_new_quantity);
+                    tv_quan.setText("Quantity : " + tv_new_quantity);
                 }
                 else{
                     adapter.removeAt(position);
@@ -75,6 +110,31 @@ public class ProductsActivity extends AppCompatActivity {
         product_recyclerView.setAdapter(adapter);
         //product_recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext() , DividerItemDecoration.VERTICAL));
         product_recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(20));
+
+
+
+        ed_productname = findViewById(R.id.ed_search_for_product);
+        btn_search = (ImageButton)findViewById(R.id.btn_search);
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ed_productname.getText().toString().equals("")){
+                    while(productArrayList.size()>0){
+                        adapter.removeAt(0);
+                    }
+                    SpecifyDisplayedProducts();
+                }else{
+                    for(int i = 0 ; i < productArrayList.size() ; i++)
+                    {
+                        if(!ed_productname.getText().toString().equals(productArrayList.get(i).ProductName)){
+                            adapter.removeAt(i);
+                            i--;
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     public void SpecifyDisplayedProducts(){

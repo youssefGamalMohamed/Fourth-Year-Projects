@@ -268,11 +268,48 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
             c.moveToFirst();
         return c;
     }
-
+    // add it to cart
     public void ReducingQuantitybtOne(int productid , int new_quantity){
         EcommerceDB = getWritableDatabase();
         String q = "update Products set Quantity=" + new_quantity + " where ProID=" + productid;
         EcommerceDB.execSQL(q);
+    }
+
+    public int GetQuantityforProduct(int productid){
+        EcommerceDB = getReadableDatabase();
+        String str_id = String.valueOf(productid);
+        Cursor c = EcommerceDB.rawQuery("select Quantity from Products where ProID = ?" , new String[] {str_id});
+        if(c != null)
+            c.moveToFirst();
+        return Integer.parseInt(c.getString(0));
+
+    }
+    public void AddMoreQuantityToProduct(int productid , int quantity){
+        int oldquantity = GetQuantityforProduct(productid);
+        int new_quantity = quantity + oldquantity;
+        EcommerceDB = getWritableDatabase();
+        String q = "update Products set Quantity=" + new_quantity + " where ProID=" + productid;
+        EcommerceDB.execSQL(q);
+    }
+
+    public int GetProductPrice(int productid){
+        EcommerceDB = getReadableDatabase();
+        String str_id = String.valueOf(productid);
+        Cursor c = EcommerceDB.rawQuery("select Price from Products where ProID = ?" , new String[] {str_id});
+        if(c != null)
+            c.moveToFirst();
+        return Integer.parseInt(c.getString(0));
+    }
+
+    public boolean CheckIFQuantityAvailableForProduct(int productid , int requred_quantity){
+        EcommerceDB = getReadableDatabase();
+        String str_productid = String.valueOf(productid);
+        String str_requred_quantity = String.valueOf(requred_quantity);
+
+        Cursor c = EcommerceDB.rawQuery("select * from Products where ProID = ? and Quantity >= ?" , new String[] {str_productid , str_requred_quantity});
+        if(c.getCount() > 0)
+            return true;
+        return false;
     }
     //-----------------------------------------------------------------------------------
 }

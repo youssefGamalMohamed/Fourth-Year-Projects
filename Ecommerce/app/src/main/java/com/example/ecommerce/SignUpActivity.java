@@ -85,13 +85,14 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final Calendar mycalender = Calendar.getInstance();
-                final int year = mycalender.get(Calendar.YEAR) , month = mycalender.get(Calendar.MONTH) , day = mycalender.get(Calendar.DAY_OF_MONTH);
+                final int myear = mycalender.get(Calendar.YEAR) , mmonth = mycalender.get(Calendar.MONTH) , mday = mycalender.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(SignUpActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        ed_birthdate.setText(dayOfMonth + "-" + month + "-" + year);
+                        int x = month + 1;
+                        ed_birthdate.setText(dayOfMonth + "-" + x + "-" + year);
                     }
-                },year,month,day);
+                },myear,mmonth,mday);
                 datePickerDialog.setTitle("Select Data");
                 datePickerDialog.show();
             }

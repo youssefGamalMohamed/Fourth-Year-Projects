@@ -10,9 +10,83 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/product_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="618dp"
+        android:layout_marginTop="43dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed_search_for_product"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/btn_cart_that_in_productactivity"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/custom_button_for_camera_and_shoppingcart_and_barcode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_camera"
+        app:layout_constraintVertical_bias="0.178"
+        app:srcCompat="@drawable/shoppingcarticon2"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/btn_camera"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/custom_button_for_camera_and_shoppingcart_and_barcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_voice"
+        app:srcCompat="@drawable/cameraicon"
+        tools:ignore="MissingConstraints,VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/btn_voice"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="508dp"
+        android:background="@drawable/custom_button_for_camera_and_shoppingcart_and_barcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/voiceicon"
+        tools:ignore="VectorDrawableCompat" />
+
+    <EditText
+        android:id="@+id/ed_search_for_product"
+        android:layout_width="310dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Search For Product"
+        android:paddingLeft="20dp"
+        android:background="@drawable/button_and_editext_custom_shape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/ed_search_for_product"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_search" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
