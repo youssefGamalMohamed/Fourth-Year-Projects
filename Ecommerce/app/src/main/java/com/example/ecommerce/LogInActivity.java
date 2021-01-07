@@ -85,6 +85,7 @@ public class LogInActivity extends AppCompatActivity {
                             myedit.commit();
                             Intent i = new Intent(getApplicationContext() , CategoriesActivity.class);
                             int custid = dbobj.GetCustomerrId(ed_username.getText().toString());
+                            Cart.CustID = custid;
                             i.putExtra("custid" , custid);
                             startActivity(i);
                             // then go to the e-commerce categories activity

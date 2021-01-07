@@ -6,19 +6,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 public class OrdersActivity extends AppCompatActivity {
@@ -27,12 +29,29 @@ public class OrdersActivity extends AppCompatActivity {
     OrderArrayAdapter adapter;
     EcommerceDataBase dobj;
 
+
+    ImageButton btn_location;
+
+
+    Button request_an_order;
+
+    @Override
+    protected void onRestart() {
+        if(!Cart.Cust_Address.equals("")){
+            btn_location.setBackground(getResources().getDrawable(R.drawable.custom_button_for_camera_and_shoppingcart_and_barcode_greencolor));
+        }
+        super.onRestart();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
 
         dobj = new EcommerceDataBase(getApplicationContext());
+        btn_location = (ImageButton)findViewById(R.id.btn_location);
+
+        request_an_order = findViewById(R.id.btn_request_order);
 
         FillproductArraListWithData();
 
@@ -43,6 +62,71 @@ public class OrdersActivity extends AppCompatActivity {
         order_recyclerView.setAdapter(adapter);
         //product_recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext() , DividerItemDecoration.VERTICAL));
         order_recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(20));
+
+
+        btn_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Cart.Cust_Address.equals("")) {
+                    Intent i = new Intent(getApplicationContext(), GoogleMapsActivity.class);
+                    startActivity(i);
+                }
+            }
+        });
+
+        request_an_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!Cart.Cust_Address.equals(""))
+                {
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+                    Date dateobj = new Date();
+                    String orderdate = dateFormat.format(dateobj);
+                    int custid = Cart.CustID;
+                    int ordid = dobj.GetMaxOrderID() + 1;
+                    String cust_address = Cart.Cust_Address;
+
+                    int total_price_that_customer_will_pay = 0;
+                    dobj.InsertIntoOrder(orderdate , custid , cust_address);
+                    for(int i = 0 ; i < productArrayList.size() ; i++)
+                    {
+                        total_price_that_customer_will_pay += productArrayList.get(i).ProductPrice;
+                        dobj.InsertIntoOrderDetails(ordid , productArrayList.get(i).ProductID , productArrayList.get(i).ProductQuantity);
+                    }
+
+
+                    LayoutInflater inflater = LayoutInflater.from(OrdersActivity.this);
+                    final View dialogview = inflater.inflate(R.layout.popup_done, null);
+                    final AlertDialog dialog = new AlertDialog.Builder(OrdersActivity.this).create();
+                    dialog.setView(dialogview);
+                    dialogview.findViewById(R.id.popup_done_txt_done).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+
+                }
+                else
+                {
+                    // Shows Pop up menu that tells u to confirm location first
+
+                    LayoutInflater inflater = LayoutInflater.from(OrdersActivity.this);
+                    final View dialogview = inflater.inflate(R.layout.popup_determine_locationfirst , null);
+                    final AlertDialog dialog = new AlertDialog.Builder(OrdersActivity.this).create();
+                    dialog.setView(dialogview);
+                    dialogview.findViewById(R.id.popup_determine_location_close).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+
+            }
+        });
     }
 
     public void FillproductArraListWithData(){

@@ -1,20 +1,33 @@
 package com.example.ecommerce;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class ProductsActivity extends AppCompatActivity {
 
@@ -43,6 +56,33 @@ public class ProductsActivity extends AppCompatActivity {
     ArrayList<Product> productArrayList;
     ProductArrayAdapter adapter;
 
+
+
+    ImageButton btn_cart;
+    EditText ed_productname;
+
+
+    ImageButton btn_voice;
+    String str_voice;
+    private static final int REQUEST_CODE = 100;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE: {
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    str_voice  = result.get(0);
+                    Toast.makeText(ProductsActivity.this , str_voice , Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+
+        }
+    }
+
+
     @Override
     protected void onRestart() {
         while (productArrayList.size() > 0){
@@ -52,9 +92,6 @@ public class ProductsActivity extends AppCompatActivity {
         super.onRestart();
     }
 
-    ImageButton btn_cart;
-    ImageButton btn_search;
-    EditText ed_productname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +132,7 @@ public class ProductsActivity extends AppCompatActivity {
 
 
                 Cart.AddProductToCart(p);
+                ((TextView)findViewById(R.id.txt_count_badge)).setText(String.valueOf(Cart.product_and_quantity.size()));
                 if(tv_new_quantity > 0) {
                     dbobj.ReducingQuantitybtOne(p.ProductID , tv_new_quantity);
                     tv_quan.setText("Quantity : " + tv_new_quantity);
@@ -114,26 +152,41 @@ public class ProductsActivity extends AppCompatActivity {
 
 
         ed_productname = findViewById(R.id.ed_search_for_product);
-        btn_search = (ImageButton)findViewById(R.id.btn_search);
-        btn_search.setOnClickListener(new View.OnClickListener() {
+        ed_productname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Filter(s.toString());
+            }
+        });
+
+
+
+
+
+        btn_voice = findViewById(R.id.btn_voice);
+        btn_voice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ed_productname.getText().toString().equals("")){
-                    while(productArrayList.size()>0){
-                        adapter.removeAt(0);
-                    }
-                    SpecifyDisplayedProducts();
-                }else{
-                    for(int i = 0 ; i < productArrayList.size() ; i++)
-                    {
-                        if(!ed_productname.getText().toString().equals(productArrayList.get(i).ProductName)){
-                            adapter.removeAt(i);
-                            i--;
-                        }
-                    }
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                try {
+                    startActivityForResult(intent, REQUEST_CODE);
+                } catch (ActivityNotFoundException a) {
+
                 }
             }
         });
+
+
 
     }
 
@@ -151,5 +204,18 @@ public class ProductsActivity extends AppCompatActivity {
             pos++;
             c.moveToNext();
         }
+        ((TextView)findViewById(R.id.txt_count_badge)).setText(String.valueOf(Cart.product_and_quantity.size()));
+    }
+
+    public void Filter(String text){
+        ArrayList<Product> filteredArrayList = new ArrayList<Product>();
+        for(int i = 0 ; i < productArrayList.size() ; i++){
+            Product p = productArrayList.get(i);
+            if(p.ProductName.toLowerCase().contains(text.toLowerCase()))
+            {
+                filteredArrayList.add(p);
+            }
+        }
+        adapter.FilterArrayList(filteredArrayList);
     }
 }

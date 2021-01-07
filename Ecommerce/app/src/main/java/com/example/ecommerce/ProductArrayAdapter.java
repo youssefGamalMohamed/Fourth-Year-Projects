@@ -50,6 +50,10 @@ public class ProductArrayAdapter extends RecyclerView.Adapter<ProductArrayAdapte
         notifyItemRangeChanged(position, AllProducts_With_Image.size());
     }
 
+    public void FilterArrayList(ArrayList<Product> filterproductArrayList){
+        AllProducts_With_Image = filterproductArrayList;
+        notifyDataSetChanged();
+    }
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView tv_productname , tv_productprice , tv_productquantity;

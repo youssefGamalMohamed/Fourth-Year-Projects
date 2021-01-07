@@ -282,7 +282,6 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
         if(c != null)
             c.moveToFirst();
         return Integer.parseInt(c.getString(0));
-
     }
     public void AddMoreQuantityToProduct(int productid , int quantity){
         int oldquantity = GetQuantityforProduct(productid);
@@ -312,4 +311,52 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
         return false;
     }
     //-----------------------------------------------------------------------------------
+
+
+
+    //Orders
+    //-----------------------------------------------------------------------------------
+    public int GetMaxOrderID(){
+        EcommerceDB = getReadableDatabase();
+        Cursor c = EcommerceDB.rawQuery("select max(OrdID) from Orders" , new String[] {});
+        int answer = 0;
+        try {
+            if(c.getCount() > 0) {
+                c.moveToFirst();
+                answer = Integer.parseInt(c.getString(0).toString());
+            }
+        }
+        catch (Exception e){
+            answer = 0;
+        }
+        return answer;
+    }
+
+    public void InsertIntoOrder(String date , int custid , String address){
+        EcommerceDB = getWritableDatabase();
+        ContentValues content = new ContentValues();
+        content.put("OrdDate" , date);
+        content.put("CustID" , custid);
+        content.put("Address" , address);
+
+        long ret = EcommerceDB.insert("Orders" , null , content);
+        EcommerceDB.close();
+    }
+    //-----------------------------------------------------------------------------------
+
+
+
+    //OrderDetails
+    //----------------------------------------------------------------------------------
+    public void InsertIntoOrderDetails(int orderid , int prodid , int quantity){
+        EcommerceDB = getWritableDatabase();
+        ContentValues content = new ContentValues();
+        content.put("OrdID" , orderid);
+        content.put("ProID" , prodid);
+        content.put("Quantity" , quantity);
+
+        long ret = EcommerceDB.insert("OrderDetails" , null , content);
+        EcommerceDB.close();
+    }
+    //----------------------------------------------------------------------------------
 }

@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Cart {
     public static int CustID , OrdID;
-
+    public static  String Cust_Address = "";
 
     // Key => Product Id
     // Pair<Product , Quantity>
