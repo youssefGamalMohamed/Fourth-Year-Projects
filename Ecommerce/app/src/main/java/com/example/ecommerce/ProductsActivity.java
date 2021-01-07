@@ -27,7 +27,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 public class ProductsActivity extends AppCompatActivity {
 
@@ -74,7 +76,7 @@ public class ProductsActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK && null != data) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     str_voice  = result.get(0);
-                    Toast.makeText(ProductsActivity.this , str_voice , Toast.LENGTH_LONG).show();
+                    ed_productname.setText(str_voice);
                 }
                 break;
             }
@@ -165,7 +167,7 @@ public class ProductsActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Filter(s.toString());
+                FilterbyText(s.toString());
             }
         });
 
@@ -206,8 +208,7 @@ public class ProductsActivity extends AppCompatActivity {
         }
         ((TextView)findViewById(R.id.txt_count_badge)).setText(String.valueOf(Cart.product_and_quantity.size()));
     }
-
-    public void Filter(String text){
+    public void FilterbyText(String text){
         ArrayList<Product> filteredArrayList = new ArrayList<Product>();
         for(int i = 0 ; i < productArrayList.size() ; i++){
             Product p = productArrayList.get(i);

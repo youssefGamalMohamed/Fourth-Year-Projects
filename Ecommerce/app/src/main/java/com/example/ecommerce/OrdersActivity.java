@@ -8,12 +8,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,7 +56,9 @@ public class OrdersActivity extends AppCompatActivity {
 
         dobj = new EcommerceDataBase(getApplicationContext());
         btn_location = (ImageButton)findViewById(R.id.btn_location);
-
+        if(!Cart.Cust_Address.equals("")){
+            btn_location.setBackground(getResources().getDrawable(R.drawable.custom_button_for_camera_and_shoppingcart_and_barcode_greencolor));
+        }
         request_an_order = findViewById(R.id.btn_request_order);
 
         FillproductArraListWithData();
@@ -77,7 +85,7 @@ public class OrdersActivity extends AppCompatActivity {
         request_an_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!Cart.Cust_Address.equals(""))
+                if(!Cart.Cust_Address.equals("") && Cart.product_and_quantity.size() > 0)
                 {
                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
                     Date dateobj = new Date();
@@ -94,35 +102,57 @@ public class OrdersActivity extends AppCompatActivity {
                         dobj.InsertIntoOrderDetails(ordid , productArrayList.get(i).ProductID , productArrayList.get(i).ProductQuantity);
                     }
 
+                    //TextView popup_done_txt_total_payment = ((TextView)findViewById(R.id.popup_done_txt_total_payment));
+                    //popup_done_txt_total_payment.setText("Total Payment is " + total_price_that_customer_will_pay + " EGP");
+                    //System.out.println("RRRRRRRRRRRRRRR" + "Total Payment is " + total_price_that_customer_will_pay + " EGP");
 
                     LayoutInflater inflater = LayoutInflater.from(OrdersActivity.this);
                     final View dialogview = inflater.inflate(R.layout.popup_done, null);
                     final AlertDialog dialog = new AlertDialog.Builder(OrdersActivity.this).create();
                     dialog.setView(dialogview);
+                    ((TextView)dialogview.findViewById(R.id.popup_done_txt_total_payment)).setText("Total Payment is " + total_price_that_customer_will_pay + " EGP");
                     dialogview.findViewById(R.id.popup_done_txt_done).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             dialog.dismiss();
+                            Intent intent = new Intent(OrdersActivity.this , CategoriesActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            Cart.MakeCartEmpty();
+                            startActivity(intent);
                         }
                     });
                     dialog.show();
+
+
 
                 }
                 else
                 {
-                    // Shows Pop up menu that tells u to confirm location first
+                    if(Cart.Cust_Address.equals("")) {
+                        // Shows Pop up menu that tells u to confirm location first
+                        LayoutInflater inflater = LayoutInflater.from(OrdersActivity.this);
+                        final View dialogview = inflater.inflate(R.layout.popup_determine_locationfirst, null);
+                        final AlertDialog dialog = new AlertDialog.Builder(OrdersActivity.this).create();
+                        dialog.setView(dialogview);
+                        dialogview.findViewById(R.id.popup_determine_location_close).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                    }
+                    if(Cart.product_and_quantity.size() == 0)
+                    {
+                        LayoutInflater myinflater = getLayoutInflater();
+                        View myview = myinflater.inflate(R.layout.custom_toast , (ViewGroup)findViewById(R.id.custom_toast1));
 
-                    LayoutInflater inflater = LayoutInflater.from(OrdersActivity.this);
-                    final View dialogview = inflater.inflate(R.layout.popup_determine_locationfirst , null);
-                    final AlertDialog dialog = new AlertDialog.Builder(OrdersActivity.this).create();
-                    dialog.setView(dialogview);
-                    dialogview.findViewById(R.id.popup_determine_location_close).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
+                        Toast t = new Toast(OrdersActivity.this);
+                        t.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL , 0 , 0);
+                        t.setDuration(Toast.LENGTH_LONG);
+                        t.setView(myview);
+                        t.show();
+                    }
                 }
 
             }

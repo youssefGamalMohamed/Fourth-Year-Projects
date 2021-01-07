@@ -65,4 +65,10 @@ public class Cart {
             System.out.println("Product ID : "  + key + " Quantity"  + product_and_quantity.get(key).second);
         }
     }
+
+
+    public static void MakeCartEmpty(){
+        product_and_quantity.clear();
+        Cust_Address = "";
+    }
 }

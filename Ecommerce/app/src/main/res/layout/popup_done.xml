@@ -25,6 +25,7 @@
         />
 
     <TextView
+        android:id="@+id/popup_done_txt_total_payment"
         android:layout_width="300dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
