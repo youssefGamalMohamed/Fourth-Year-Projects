@@ -359,4 +359,33 @@ public class EcommerceDataBase extends SQLiteOpenHelper {
         EcommerceDB.close();
     }
     //----------------------------------------------------------------------------------
+
+
+
+
+    //Statistics
+    public Cursor PieChartFunction(){
+        EcommerceDB = getReadableDatabase();
+        Cursor c = EcommerceDB.rawQuery("select ProID,Quantity from OrderDetails" , new String[] {});
+        c.moveToFirst();
+        EcommerceDB.close();
+        return c;
+    }
+
+    public String RetriveCategoryNameByProductID(int productid){
+        EcommerceDB = getReadableDatabase();
+        Cursor c = EcommerceDB.rawQuery("select Catname from Categories,Products where Products.CatID=Categories.CatID and ProID=?" , new String[] {String.valueOf(productid)});
+        c.moveToFirst();
+        EcommerceDB.close();
+        return c.getString(0);
+    }
+
+
+    public String BarChartFunction(int productid){
+        EcommerceDB = getReadableDatabase();
+        Cursor c = EcommerceDB.rawQuery("select ProName from Products where ProID=?" , new String[] {String.valueOf(productid)});
+        c.moveToFirst();
+        EcommerceDB.close();
+        return c.getString(0);
+    }
 }

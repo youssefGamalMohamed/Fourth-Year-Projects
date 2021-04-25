@@ -8,12 +8,63 @@
     tools:context=".CategoriesActivity">
 
 
+    <ImageButton
+        android:id="@+id/btn_piechart"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/staticstic"
+        android:onClick="pie_chart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pie_chart_32_orange" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categories_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="600dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="110dp"
+        android:background="@drawable/staticstic"
+        android:onClick="bar_chart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bar_chart_5_32" />
+
+    <TextView
+        android:id="@+id/pietext"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="Pie Chart"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/btn_piechart"
+        app:layout_constraintTop_toBottomOf="@+id/btn_piechart" />
+
+    <TextView
+        android:id="@+id/bartext"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="Bar Chart"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@+id/imageButton2"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

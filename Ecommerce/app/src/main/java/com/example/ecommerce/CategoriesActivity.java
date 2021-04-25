@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -77,5 +78,15 @@ public class CategoriesActivity extends AppCompatActivity {
         int spacing = 50; // 50px
         boolean includeEdge = true;
         categories_recyceler_view.addItemDecoration(new CategoriesItemDecoration(spanCount, spacing, includeEdge));
+    }
+
+    public void pie_chart(View view) {
+        Intent i = new Intent(CategoriesActivity.this , StatisticsActivity.class);
+        startActivity(i);
+    }
+
+    public void bar_chart(View view) {
+        Intent i = new Intent(CategoriesActivity.this , StatisitcsBarChartActivity.class);
+        startActivity(i);
     }
 }
