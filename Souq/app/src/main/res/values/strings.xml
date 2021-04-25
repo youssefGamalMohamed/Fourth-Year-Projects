@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Souq</string>
+    <string name="Login_Successfully">Successfully Login</string>
+    <string name="Login_Faild">Invalid Username or Password</string>
+    <string name="Error_IN_Entered_Code">Error In Entered Code</string>
+    <string name="SignUp_Failed">Sign Up Failed</string>
+    <string name="SignUp_Successfully">Signed Up Successfully</string>
+</resources>
